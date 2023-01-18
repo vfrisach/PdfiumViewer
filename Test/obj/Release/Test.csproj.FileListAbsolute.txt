@@ -1,0 +1,16 @@
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\Test.exe.config
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\Test.exe
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\Test.pdb
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\PdfiumViewer.dll
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\PdfiumViewer.pdb
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\PdfiumViewer.xml
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\bin\Release\nl\PdfiumViewer.resources.dll
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.csproj.AssemblyReference.cache
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.csproj.SuggestedBindingRedirects.cache
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.Form1.resources
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.Properties.Resources.resources
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.csproj.GenerateResource.cache
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.csproj.CoreCompileInputs.cache
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.csproj.CopyComplete
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.exe
+C:\Users\vfrisach\source\repos\PdfiumViewer\Test\obj\Release\Test.pdb

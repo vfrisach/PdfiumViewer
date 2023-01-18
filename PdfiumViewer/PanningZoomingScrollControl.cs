@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 #pragma warning disable 1591
@@ -120,6 +118,8 @@ namespace PdfiumViewer
         [DefaultValue(MouseWheelMode.PanAndZoom)]
         public MouseWheelMode MouseWheelMode { get; set; }
 
+        protected bool MousePanningEnabled { get; set; } = true;
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
         /// </summary>
@@ -226,7 +226,7 @@ namespace PdfiumViewer
 
         protected override void OnSetCursor(SetCursorEventArgs e)
         {
-            if (_canPan && e.HitTest == HitTest.Client)
+            if (MousePanningEnabled && _canPan && e.HitTest == HitTest.Client)
                 e.Cursor = PanCursor;
 
             base.OnSetCursor(e);
@@ -243,7 +243,7 @@ namespace PdfiumViewer
         {
             base.OnMouseDown(e);
 
-            if (e.Button != MouseButtons.Left || !_canPan)
+            if (!MousePanningEnabled || e.Button != MouseButtons.Left || !_canPan)
                 return;
 
             Capture = true;
@@ -255,7 +255,7 @@ namespace PdfiumViewer
         {
             base.OnMouseMove(e);
 
-            if (!Capture)
+            if (!MousePanningEnabled || !Capture)
                 return;
 
             var offset = new Point(e.Location.X - _dragStart.X, e.Location.Y - _dragStart.Y);
@@ -267,7 +267,8 @@ namespace PdfiumViewer
         {
             base.OnMouseUp(e);
 
-            Capture = false;
+            if (MousePanningEnabled)
+                Capture = false;
         }
 
         private class WheelFilter : IMessageFilter

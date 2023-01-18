@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using System.Text;
 using System.Windows.Forms;
 
 #pragma warning disable 1591
@@ -94,7 +92,8 @@ namespace PdfiumViewer
 
         public CustomScrollControl()
         {
-            SetStyle(ControlStyles.ContainerControl, true);
+            SetStyle(ControlStyles.Selectable, true);
+            SetStyle(ControlStyles.UserMouse, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, false);
 
             _horizontalScroll = new ScrollProperties(this, NativeMethods.SB_HORZ);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 
 #pragma warning disable 1591
 
@@ -15,7 +10,7 @@ namespace PdfiumViewer
         /// Gets the link that was clicked.
         /// </summary>
         public PdfPageLink Link { get; private set; }
-        
+
         public LinkClickEventArgs(PdfPageLink link)
         {
             Link = link;

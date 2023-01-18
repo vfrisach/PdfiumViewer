@@ -49,6 +49,7 @@
     <Compile Include="CustomScrollControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GraphicsCoordinates.cs" />
     <Compile Include="HitTest.cs" />
     <Compile Include="IPdfDocument.cs" />
     <Compile Include="IPdfMarker.cs" />
@@ -69,6 +70,7 @@
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PdfBookmarkCollection.cs" />
+    <Compile Include="PdfCharacterInformation.cs" />
     <Compile Include="PdfiumResolveEventHandler.cs" />
     <Compile Include="PdfiumResolver.cs" />
     <Compile Include="PdfPrintMultiplePages.cs" />
@@ -82,8 +84,10 @@
     <Compile Include="PdfMarkerCollection.cs" />
     <Compile Include="PdfPoint.cs" />
     <Compile Include="PdfInformation.cs" />
+    <Compile Include="PdfRectManager.cs" />
     <Compile Include="PdfSearchManager.cs" />
     <Compile Include="PdfTextSpan.cs" />
+    <Compile Include="PdfViewerCursorMode.cs" />
     <Compile Include="StreamManager.cs" />
     <Compile Include="PdfPageLink.cs" />
     <Compile Include="PdfPageLinks.cs" />

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace PdfiumViewer.Demo
@@ -11,6 +6,7 @@ namespace PdfiumViewer.Demo
     public partial class SearchForm : Form
     {
         private readonly PdfSearchManager _searchManager;
+        private readonly PdfRectManager _rectManager;
         private bool _findDirty;
 
         public SearchForm(PdfRenderer renderer)
@@ -21,7 +17,7 @@ namespace PdfiumViewer.Demo
             InitializeComponent();
 
             _searchManager = new PdfSearchManager(renderer);
-
+            _rectManager = new PdfRectManager(renderer);
             _matchCase.Checked = _searchManager.MatchCase;
             _matchWholeWord.Checked = _searchManager.MatchWholeWord;
             _highlightAll.Checked = _searchManager.HighlightAllMatches;

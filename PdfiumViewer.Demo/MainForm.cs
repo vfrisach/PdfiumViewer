@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -9,28 +7,86 @@ using System.Windows.Forms;
 
 namespace PdfiumViewer.Demo
 {
+
     public partial class MainForm : Form
     {
+      
+
         private SearchForm _searchForm;
+        GraphicsCoordinates currentCoordinates;
+        private readonly PdfRectManager _rectManager;
 
         public MainForm()
         {
             InitializeComponent();
-
             renderToBitmapsToolStripMenuItem.Enabled = false;
-
+            //pdfViewer1.Renderer.ContextMenuStrip = pdfViewerContextMenu;
             pdfViewer1.Renderer.DisplayRectangleChanged += Renderer_DisplayRectangleChanged;
             pdfViewer1.Renderer.ZoomChanged += Renderer_ZoomChanged;
-
             pdfViewer1.Renderer.MouseMove += Renderer_MouseMove;
             pdfViewer1.Renderer.MouseLeave += Renderer_MouseLeave;
+            pdfViewer1.Renderer.MouseDown += Renderer_MouseDown;
+            pdfViewer1.Renderer.MouseUp += Renderer_MouseUp;
             ShowPdfLocation(PdfPoint.Empty);
-
             cutMarginsWhenPrintingToolStripMenuItem.PerformClick();
-
             _zoom.Text = pdfViewer1.Renderer.Zoom.ToString();
-
             Disposed += (s, e) => pdfViewer1.Document?.Dispose();
+            _rectManager = new PdfRectManager(pdfViewer1.Renderer);
+        }
+
+      
+
+        private void Renderer_MouseUp(object sender, MouseEventArgs e)
+        {
+            UpdateCurrentRect(e.Location);
+            
+            if (pdfViewer1.Renderer.CursorMode==PdfViewerCursorMode.TextSelection)
+            {
+                if (currentCoordinates != null)
+                {
+                    _rectManager.DrawRect(currentCoordinates);
+                    var area = new RectangleF(
+                        Math.Min(currentCoordinates.Point1.Location.X, currentCoordinates.Point2.Location.X),
+                        Math.Min(currentCoordinates.Point1.Location.Y, currentCoordinates.Point2.Location.Y),
+                        Math.Abs(currentCoordinates.Point2.Location.X - currentCoordinates.Point1.Location.X),
+                        Math.Abs(currentCoordinates.Point2.Location.Y - currentCoordinates.Point1.Location.Y));
+                    var textos = pdfViewer1.Document.GetCharacterInformation(pdfViewer1.Renderer.Page);
+                    StringBuilder text = new StringBuilder();
+                    foreach (var ch in textos)
+                    {
+
+                        if (area.Contains(ch.Bounds))
+                        {
+                            text.Append(ch.Character);
+                        }
+                    }
+                    toolStripLabel3.Text = text.ToString();
+                }
+            }
+ 
+  
+        }
+        private void Renderer_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                pdfViewer1.Renderer.CursorMode = PdfViewerCursorMode.Pan;
+            }
+            else
+            {
+                pdfViewer1.Renderer.CursorMode = PdfViewerCursorMode.TextSelection;
+            }
+            var position = pdfViewer1.Renderer.PointToPdf(e.Location);
+            currentCoordinates = new GraphicsCoordinates(1 - 1, position, position);
+        }
+
+        void UpdateCurrentRect(Point location)
+        {
+            if (currentCoordinates != null)
+            {
+                var documentPosition = pdfViewer1.Renderer.PointToPdf(location);
+                currentCoordinates = new GraphicsCoordinates(currentCoordinates.PageIndex, currentCoordinates.Point1, documentPosition);
+            }
         }
 
         private void Renderer_MouseLeave(object sender, EventArgs e)
@@ -41,6 +97,13 @@ namespace PdfiumViewer.Demo
         private void Renderer_MouseMove(object sender, MouseEventArgs e)
         {
             ShowPdfLocation(pdfViewer1.Renderer.PointToPdf(e.Location));
+            if (e.Button == MouseButtons.Right)
+            {
+                if (currentCoordinates != null)
+                {
+                    UpdateCurrentRect(e.Location);
+                }
+            }
         }
 
         private void ShowPdfLocation(PdfPoint point)
@@ -331,8 +394,8 @@ namespace PdfiumViewer.Demo
                     pdfViewer1.Document = form.Document;
                 }
             }
-		}
-			
+        }
+
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PdfInformation info = pdfViewer1.Document.GetInformation();
@@ -347,10 +410,11 @@ namespace PdfiumViewer.Demo
             sz.AppendLine($"Modified Date: {info.ModificationDate}");
 
             MessageBox.Show(sz.ToString(), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-		}	
+        }
 
         private void _getTextFromPage_Click(object sender, EventArgs e)
         {
+
             int page = pdfViewer1.Renderer.Page;
             string text = pdfViewer1.Document.GetPdfText(page);
             string caption = string.Format("Page {0} contains {1} character(s):", page + 1, text.Length);
@@ -377,6 +441,26 @@ namespace PdfiumViewer.Demo
             {
                 form.ShowDialog(this);
             }
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pdfViewer1.Renderer.CopySelection();
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pdfViewer1.Renderer.SelectAll();
+        }
+
+        private void pdfViewerContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            copyToolStripMenuItem.Enabled = pdfViewer1.Renderer.IsTextSelected;
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
